@@ -28,8 +28,6 @@ class ServerInstaller: Identifiable, ObservableObject {
 	init(app: AppInfoPresentable, viewModel: InstallerStatusViewModel) throws {
 		self.app = app
 		self.viewModel = viewModel
-		Self.setServerMethod(1)
-		Self.setIPFix(true)
 		self._server = try Self.setupApp(port: port)
 		
 		try _configureRoutes()
@@ -100,11 +98,14 @@ class ServerInstaller: Identifiable, ObservableObject {
 	}
 		
 	static func getServerMethod() -> Int {
-		return 1
+		if UserDefaults.standard.object(forKey: "Feather.serverMethod") == nil {
+			return 1
+		}
+		return UserDefaults.standard.integer(forKey: "Feather.serverMethod")
 	}
 	
 	static func getIPFix() -> Bool {
-		return true
+		UserDefaults.standard.bool(forKey: "Feather.ipFix")
 	}
 	
 	static func setServerMethod(_ method: Int) {
