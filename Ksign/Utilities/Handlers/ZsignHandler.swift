@@ -42,11 +42,14 @@ final class ZsignHandler {
 		guard let cert = _certificate else {
 			throw SigningFileHandlerError.missingCertifcate
 		}
+		guard let provisionURL = Storage.shared.getFile(.provision, from: cert), let p12URL = Storage.shared.getFile(.certificate, from: cert) else {
+			throw SigningFileHandlerError.missingCertifcate
+		}
 		
         let _ = Zsign.sign(
             appPath: _appUrl.relativePath,
-            provisionPath: Storage.shared.getFile(.provision, from: cert)?.path ?? "",
-            p12Path: Storage.shared.getFile(.certificate, from: cert)?.path ?? "",
+            provisionPath: provisionURL.path ,
+            p12Path: p12URL.path,
             p12Password: cert.password ?? "",
             entitlementsPath: _options.appEntitlementsFile?.path ?? "",
             customIdentifier: _options.appIdentifier ?? "",
