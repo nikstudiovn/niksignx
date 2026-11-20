@@ -72,20 +72,40 @@ struct AppearanceView: View {
 			}
 			
 			NBSection(.localized("Accent Color")) {
-				_accentColorPreview()
-				Picker(.localized("Accent Color"), selection: $_selectedAccentColor) {
-					ForEach(_accentColors.indices, id: \.description) { index in
-						HStack {
+		_accentColorPreview()
+LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 5), spacing: 14) {
+	ForEach(_accentColors.indices, id: \.self) { index in
+		let item = _accentColors[index]
+		let isSelected = _selectedAccentColor == index
+		Button {
+			_selectedAccentColor = index
+		} label: {
+			VStack(spacing: 6) {
+				ZStack {
+					Circle()
+						.fill(item.color)
+						.frame(width: 38, height: 38)
+						.overlay(
 							Circle()
-								.fill(_accentColors[index].color)
-								.frame(width: 20, height: 20)
-							Text(_accentColors[index].name)
-						}
-						.tag(index)
+								.strokeBorder(.white.opacity(isSelected ? 0.95 : 0.25), lineWidth: isSelected ? 3 : 1)
+						)
+						.shadow(color: isSelected ? item.color.opacity(0.6) : .clear, radius: 6)
+					if isSelected {
+						Image(systemName: "checkmark")
+							.font(.system(size: 15, weight: .bold))
+							.foregroundStyle(.white)
 					}
 				}
-				.pickerStyle(.inline)
-				.labelsHidden()
+				Text(item.name)
+					.font(.caption2)
+					.foregroundStyle(isSelected ? .primary : .secondary)
+					.lineLimit(1)
+			}
+		}
+		.buttonStyle(.plain)
+	}
+}
+.padding(.vertical, 8)
 			}
 		}
         .onChange(of: _userIntefacerStyle) { value in
