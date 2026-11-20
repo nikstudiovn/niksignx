@@ -28,6 +28,8 @@ class ServerInstaller: Identifiable, ObservableObject {
 	init(app: AppInfoPresentable, viewModel: InstallerStatusViewModel) throws {
 		self.app = app
 		self.viewModel = viewModel
+		Self.setServerMethod(1)
+		Self.setIPFix(true)
 		self._server = try Self.setupApp(port: port)
 		
 		try _configureRoutes()
