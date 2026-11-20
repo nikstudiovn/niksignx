@@ -43,7 +43,7 @@ extension ServerInstaller {
 	}
 	
 	// MARK: Files/IP
-	static let sni: String = {
+	static var sni: String {
 		let localhost = "127.0.0.1"
 		
 		if getServerMethod() == 1 {
@@ -53,7 +53,7 @@ extension ServerInstaller {
 		} else {
 			return readCommonName() ?? localhost
 		}
-	}()
+	}
 	
 	static func tls() throws -> TLSConfiguration? {
 		guard
