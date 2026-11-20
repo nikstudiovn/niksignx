@@ -49,12 +49,8 @@ struct InstallPreviewView: View {
 		}
 		.onReceive(viewModel.$status) { newStatus in
 			if case .ready = newStatus {
-				if _serverMethod == 0 {
-					UIApplication.shared.open(URL(string: installer.iTunesLink)!)
-				} else if _serverMethod == 1 {
 					if let url = URL(string: installer.iTunesLinkExternal) {
-						UIApplication.shared.open(url)
-					}
+					UIApplication.shared.open(url)
 				}
 			}
             
