@@ -10,7 +10,7 @@ import Foundation
 // MARK: - Class
 public class NBFetchService {
 	
-	public enum NBFetchServiceError: Error, LocalizedError {
+	public enum NBFetchServiceError: Error, LocalizedError, @unchecked Sendable {
 		case invalidURL
 		case networkError(Error)
 		case noData
