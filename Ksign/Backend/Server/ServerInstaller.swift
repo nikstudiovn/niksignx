@@ -98,9 +98,6 @@ class ServerInstaller: Identifiable, ObservableObject {
 	}
 		
 	static func getServerMethod() -> Int {
-		if UserDefaults.standard.object(forKey: "Feather.serverMethod") == nil {
-			return 1
-		}
 		return UserDefaults.standard.integer(forKey: "Feather.serverMethod")
 	}
 	
