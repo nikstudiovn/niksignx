@@ -15,7 +15,7 @@ struct BulkInstallProgressView: View {
     @StateObject var viewModel = InstallerStatusViewModel()
     
     @AppStorage("Feather.installationMethod") private var _installationMethod: Int = 0
-    @AppStorage("Feather.serverMethod") private var _serverMethod: Int = 1
+    @AppStorage("Feather.serverMethod") private var _serverMethod: Int = 0
     @StateObject var installer: ServerInstaller
     @State private var _isWebviewPresenting = false
     @State private var progressTask: Task<Void, Never>?
@@ -37,9 +37,15 @@ struct BulkInstallProgressView: View {
         }
         .onReceive(viewModel.$status) { newStatus in
             if case .ready = newStatus {
-                if let url = URL(string: installer.iTunesLinkExternal) {
-                    UIApplication.shared.open(url)
-                }
+                if _serverMethod == 0 {
+                    if let url = URL(string: installer.iTunesLink) {
+                        UIApplication.shared.open(url)
+                    } else if _serverMethod == 1 {
+                        if let url = URL(string: installer.iTunesLinkExternal) {
+                            UIApplication.shared.open(url)
+                        }
+                    }
+                    
             }
             
             if case .installing = newStatus {
