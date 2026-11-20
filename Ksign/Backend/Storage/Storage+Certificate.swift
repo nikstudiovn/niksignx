@@ -19,9 +19,9 @@ extension Storage {
 		expiration: Date,
 		completion: @escaping (Error?) -> Void
 	) {
-		let generator = UIImpactFeedbackGenerator(style: .light)
+		context.perform {
 		
-		let new = CertificatePair(context: context)
+		let new = CertificatePair(context: self.context)
 		new.uuid = uuid
 		new.date = Date()
 		new.password = password
@@ -29,9 +29,12 @@ extension Storage {
 		new.expiration = expiration
 		new.nickname = nickname
 		
-        saveContext()
-        generator.impactOccurred()
-        completion(nil)
+        self.saveContext()
+		DispatchQueue.main.async {
+			UIImpactFeedbackGenerator(style: .light).impactOccurred()
+			completion(nil)
+		}
+		}
 	}
     
     func revokagedCertificate(for cert: CertificatePair) {
