@@ -22,9 +22,9 @@ extension Storage {
 		
 		completion: @escaping (Error?) -> Void
 	) {
-		let generator = UIImpactFeedbackGenerator(style: .light)
+		context.perform {
 		
-		let new = Signed(context: context)
+		let new = Signed(context: self.context)
 		
 		new.uuid = uuid
 		new.source = source
@@ -37,8 +37,11 @@ extension Storage {
 		new.icon = appIcon
 		new.version = appVersion
 		
-        saveContext()
-        generator.impactOccurred()
-        completion(nil)
+        self.saveContext()
+       DispatchQueue.main.async {
+		   UIImpactFeedbackGenerator(style: .light).impactOccurred()
+		   completion(nil)
+	   }
+		}	
 	}
 }
